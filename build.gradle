@@ -1,0 +1,32 @@
+group 'consol.downloader'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'com.google.guava', name: 'guava', version: '23.0'
+}
+
+task fatJar(type: Jar){
+    manifest {
+        attributes 'Main-Class' : 'General'
+    }
+
+    from {
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+    with jar
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.12'
+}
